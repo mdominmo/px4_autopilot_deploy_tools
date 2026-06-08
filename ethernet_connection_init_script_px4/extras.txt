@@ -1,0 +1,7 @@
+# /fs/microsd/etc/extras.txt
+# Iniciar uxrce_dds_client con transporte serial, dispositivo específico, velocidad en baudios y espacio de no
+set +e
+uxrce_dds_client stop
+sleep 10
+uxrce_dds_client start -t udp -p 8888 -h 10.10.20.1 -n px4_2
+set -e
