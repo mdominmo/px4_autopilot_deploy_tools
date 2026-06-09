@@ -12,13 +12,13 @@ def patched_add_message(messages, mtype, msg):
         messages[mtype] = msg
 mavutil_module.add_message = patched_add_message
 
-parser = argparse.ArgumentParser(description='Escribe extras.txt con configuracion de red y agente UXRCE')
-parser.add_argument('--px4-ip',     default='10.10.10.10', help='IP del Pixhawk en eth0 (default: 10.10.10.10)')
-parser.add_argument('--agent-ip',   default='10.10.10.11', help='IP del agente UXRCE en el PC (default: 10.10.10.11)')
-parser.add_argument('--agent-port', default=8888, type=int, help='Puerto del agente UXRCE (default: 8888)')
-parser.add_argument('--mask',       default='255.255.255.0')
-parser.add_argument('--device',     default='/dev/ttyACM0')
-parser.add_argument('--baud',       default=2000000, type=int)
+parser = argparse.ArgumentParser(description='Escribe /fs/microsd/net.cfg para configurar ethernet de forma persistente')
+parser.add_argument('--ip',      default='10.10.10.10',  help='IP del Pixhawk (default: 10.10.10.10)')
+parser.add_argument('--router',  default='10.10.10.1',   help='Gateway (default: 10.10.10.1)')
+parser.add_argument('--mask',    default='255.255.255.0')
+parser.add_argument('--dns',     default='10.41.10.254')
+parser.add_argument('--device',  default='/dev/ttyACM0')
+parser.add_argument('--baud',    default=2000000, type=int)
 args = parser.parse_args()
 
 OP_RemoveFile       = 8
@@ -64,20 +64,19 @@ def shell(mav, cmd):
 mav = mavutil.mavlink_connection(args.device, baud=args.baud)
 try:
     mav.wait_heartbeat(timeout=10)
-except:
+except Exception:
     pass
 print("Conectado")
 
 content = (
-    f"set +e\n"
-    f"ifconfig eth0 {args.px4_ip} netmask {args.mask}\n"
-    f"sleep 10\n"
-    f"uxrce_dds_client stop\n"
-    f"sleep 10\n"
-    f"uxrce_dds_client start -t udp -h {args.agent_ip} -p {args.agent_port}\n"
-    f"set -e\n"
+    f"DEVICE=eth0\n"
+    f"BOOTPROTO=static\n"
+    f"NETMASK={args.mask}\n"
+    f"IPADDR={args.ip}\n"
+    f"ROUTER={args.router}\n"
+    f"DNS={args.dns}\n"
 ).encode()
-path = b'/fs/microsd/etc/extras.txt\x00'
+path = b'/fs/microsd/net.cfg\x00'
 
 print(f"\nContenido a escribir:\n{content.decode()}")
 
@@ -104,4 +103,5 @@ mavftp_send(mav, OP_TerminateSession, session, 0, seq=4)
 print("Sesion cerrada")
 
 time.sleep(0.5)
-shell(mav, 'cat /fs/microsd/etc/extras.txt')
+print("\n--- net.cfg resultante ---")
+shell(mav, 'cat /fs/microsd/net.cfg')

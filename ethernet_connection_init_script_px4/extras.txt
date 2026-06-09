@@ -3,5 +3,5 @@
 set +e
 uxrce_dds_client stop
 sleep 10
-uxrce_dds_client start -t udp -p 8888 -h 10.10.20.1 -n px4_2
+uxrce_dds_client start -t udp -p 8888 -h 10.10.10.1 -n px4_1
 set -e
