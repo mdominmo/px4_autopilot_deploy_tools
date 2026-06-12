@@ -20,6 +20,7 @@ parser.add_argument('--drone-name', default='px4_1', help='Nombre del dron para 
 parser.add_argument('--mask',       default='255.255.255.0')
 parser.add_argument('--device',     default='/dev/ttyACM0')
 parser.add_argument('--baud',       default=2000000, type=int)
+parser.add_argument('-n', '--name', default='px4_1', help='Namespace del dron para UXRCE DDS (default: px4_1)')
 args = parser.parse_args()
 
 OP_RemoveFile       = 8
