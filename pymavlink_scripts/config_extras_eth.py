@@ -16,6 +16,7 @@ parser = argparse.ArgumentParser(description='Escribe extras.txt con configuraci
 parser.add_argument('--px4-ip',     default='10.10.10.10', help='IP del Pixhawk en eth0 (default: 10.10.10.10)')
 parser.add_argument('--agent-ip',   default='10.10.10.11', help='IP del agente UXRCE en el PC (default: 10.10.10.11)')
 parser.add_argument('--agent-port', default=8888, type=int, help='Puerto del agente UXRCE (default: 8888)')
+parser.add_argument('--drone-name', default='px4_1', help='Nombre del dron para el namespace UXRCE (default: px4_1)')
 parser.add_argument('--mask',       default='255.255.255.0')
 parser.add_argument('--device',     default='/dev/ttyACM0')
 parser.add_argument('--baud',       default=2000000, type=int)
@@ -74,7 +75,7 @@ content = (
     f"sleep 10\n"
     f"uxrce_dds_client stop\n"
     f"sleep 10\n"
-    f"uxrce_dds_client start -t udp -h {args.agent_ip} -p {args.agent_port}\n"
+    f"uxrce_dds_client start -t udp -h {args.agent_ip} -p {args.agent_port} -n {args.drone_name}\n"
     f"set -e\n"
 ).encode()
 path = b'/fs/microsd/etc/extras.txt\x00'
