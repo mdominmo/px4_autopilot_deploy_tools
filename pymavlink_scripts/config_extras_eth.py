@@ -19,6 +19,7 @@ parser.add_argument('--agent-port', default=8888, type=int, help='Puerto del age
 parser.add_argument('--mask',       default='255.255.255.0')
 parser.add_argument('--device',     default='/dev/ttyACM0')
 parser.add_argument('--baud',       default=2000000, type=int)
+parser.add_argument('-n', '--name', default='px4_1', help='Namespace del dron para UXRCE DDS (default: px4_1)')
 args = parser.parse_args()
 
 OP_RemoveFile       = 8
@@ -74,7 +75,7 @@ content = (
     f"sleep 10\n"
     f"uxrce_dds_client stop\n"
     f"sleep 10\n"
-    f"uxrce_dds_client start -t udp -h {args.agent_ip} -p {args.agent_port}\n"
+    f"uxrce_dds_client start -t udp -h {args.agent_ip} -p {args.agent_port} -n {args.name}\n"
     f"set -e\n"
 ).encode()
 path = b'/fs/microsd/etc/extras.txt\x00'
