@@ -1,5 +1,8 @@
 #!/bin/bash
 #
+# CASO: Jetson conectada por WiFi a un router (sin salida a Internet),
+# en la misma red que el PC.
+#
 # Hace que la Jetson saque su tráfico a Internet a través del PC,
 # en lugar de a través del router (que no tiene salida a Internet).
 #
@@ -7,7 +10,7 @@
 # con el PC dentro de la subred del router sigue igual.
 #
 # Ejecutar DESPUÉS de pc/compartir_internet.sh, con sudo:
-#   sudo bash configurar_gateway.sh [PC_IP] [IFACE]
+#   sudo bash configurar_gateway_via_router.sh [PC_IP] [IFACE]
 #
 set -euo pipefail
 

@@ -1,13 +1,16 @@
 #!/bin/bash
 #
-# Revierte los cambios hechos por configurar_gateway.sh:
+# CASO: Jetson conectada por WiFi a un router (sin salida a Internet),
+# en la misma red que el PC.
+#
+# Revierte los cambios hechos por configurar_gateway_via_router.sh:
 # elimina la ruta por defecto hacia el PC y vuelve al DNS automático del router.
 #
-# Ejecutar con: sudo bash restaurar_gateway.sh [PC_IP] [IFACE]
+# Ejecutar con: sudo bash restaurar_gateway_via_router.sh [PC_IP] [IFACE]
 #
 set -euo pipefail
 
-# Deben coincidir con los usados en configurar_gateway.sh
+# Deben coincidir con los usados en configurar_gateway_via_router.sh
 PC_IP="${1:-192.168.1.50}"
 IFACE="${2:-wlP1p1s0}"
 

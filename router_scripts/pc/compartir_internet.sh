@@ -72,4 +72,5 @@ echo
 echo "== Listo =="
 IP_LAN=$(ip -4 -br addr show "$LAN_IFACE" | awk '{print $3}' | cut -d/ -f1)
 echo "IP de este PC en la red del router ($LAN_IFACE): $IP_LAN"
-echo "Usa esta IP como PC_IP en jetson/configurar_gateway.sh"
+echo "Usa esta IP como PC_IP en jetson/configurar_gateway_via_router.sh o"
+echo "jetson/configurar_gateway_cable_directo.sh, segun como este conectada la Jetson."
