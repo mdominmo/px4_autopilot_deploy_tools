@@ -20,7 +20,6 @@ parser.add_argument('--drone-name', default='px4_1', help='Nombre del dron para 
 parser.add_argument('--mask',       default='255.255.255.0')
 parser.add_argument('--device',     default='/dev/ttyACM0')
 parser.add_argument('--baud',       default=2000000, type=int)
-parser.add_argument('-n', '--name', default='px4_1', help='Namespace del dron para UXRCE DDS (default: px4_1)')
 args = parser.parse_args()
 
 OP_RemoveFile       = 8
@@ -76,11 +75,7 @@ content = (
     f"sleep 10\n"
     f"uxrce_dds_client stop\n"
     f"sleep 10\n"
-<<<<<<< HEAD
     f"uxrce_dds_client start -t udp -h {args.agent_ip} -p {args.agent_port} -n {args.drone_name}\n"
-=======
-    f"uxrce_dds_client start -t udp -h {args.agent_ip} -p {args.agent_port} -n {args.name}\n"
->>>>>>> b5776e0139e3e5eadc60d827041058b06ecfb651
     f"set -e\n"
 ).encode()
 path = b'/fs/microsd/etc/extras.txt\x00'
