@@ -1,13 +1,12 @@
 #!/bin/bash
-# Configura IP(s) estaticas de forma PERMANENTE (persiste tras reiniciar)
+# Configura una IP estatica de forma PERMANENTE (persiste tras reiniciar)
 # creando/actualizando un perfil de conexion en NetworkManager.
 # A diferencia de set_eth_ip(s).sh, NO hace falta volver a ejecutarlo
 # cada vez que arranca el equipo: NetworkManager aplica el perfil solo.
 
 IFACE="${1:-enP8p1s0}"
-IP1="${2:-10.10.10.11}"
-IP2="${3:-10.100.100.30}"
-PREFIX="${4:-24}"
+IP="${2:-10.10.10.11}"
+PREFIX="${3:-24}"
 CON_NAME="static-${IFACE}"
 
 if ! ip link show "$IFACE" &>/dev/null; then
@@ -22,10 +21,7 @@ if ! command -v nmcli &>/dev/null; then
     exit 1
 fi
 
-ADDRESSES="${IP1}/${PREFIX}"
-if [ -n "$IP2" ]; then
-    ADDRESSES="${ADDRESSES},${IP2}/${PREFIX}"
-fi
+ADDRESSES="${IP}/${PREFIX}"
 
 if nmcli -t -f NAME connection show | grep -qx "$CON_NAME"; then
     echo "Actualizando perfil existente '$CON_NAME'..."
@@ -49,7 +45,7 @@ fi
 
 echo "Aplicando configuracion..."
 if nmcli connection up "$CON_NAME" &>/dev/null; then
-    echo "Interfaz $IFACE activa con IP(s) $ADDRESSES"
+    echo "Interfaz $IFACE activa con IP $ADDRESSES"
 else
     echo "Perfil guardado, pero no se pudo activar ahora (revisa el cable/enlace)."
     echo "Se aplicara solo en cuanto la interfaz este disponible."
